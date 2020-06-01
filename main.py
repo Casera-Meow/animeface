@@ -6,6 +6,7 @@ from ACGAN import main as acgan_main
 from pixelshuffle import main as pixelshuffle_main
 
 from pix2pix import main as pix2pix_main
+from SRGAN import main as srgan_main
 
 def main():
     # image_size = 128
@@ -20,7 +21,7 @@ def main():
     #     image_size=image_size
     # )
 
-    pix2pix_main(
+    srgan_main(
         GeneratePairImageDanbooruDataset,
         to_loader
     )
