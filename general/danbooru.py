@@ -35,8 +35,10 @@ class DanbooruDataset(Dataset):
         return image_paths
 
 class GeneratePairImageDanbooruDataset(Dataset):
-    def __init__(self, pair_transform, image_size):
+    def __init__(self, pair_transform, image_size, n_images):
         self.image_paths = self._load()
+        if n_images:
+            self.image_paths = self.random_select(n_images=n_images)
         self.length = len(self.image_paths)
 
         self.co_transform_head = transforms.RandomResizedCrop(image_size)
@@ -77,6 +79,16 @@ class GeneratePairImageDanbooruDataset(Dataset):
 
         return image_paths
 
+    def random_select(self, n_images):
+        indices = np.random.randint(0, len(self.image_paths), (n_images, ))
+
+        selected_image_paths = []
+
+        for index in indices:
+            selected_image_paths.append(self.image_paths[index])
+        
+        return selected_image_paths
+
 if __name__ == "__main__":
     transform = transforms.Compose([
         transforms.RandomResizedCrop(224),
@@ -92,7 +104,8 @@ if __name__ == "__main__":
 
     pair_transform = transforms.Resize(128)
     
-    dataset = GeneratePairImageDanbooruDataset(pair_transform, 256)
+    dataset = GeneratePairImageDanbooruDataset(pair_transform, 256, n_images=100)
+    print(len(dataset))
     for data, data2 in dataset:
         print(data.size())
         print(data2.size())
