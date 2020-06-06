@@ -184,6 +184,7 @@ def main(
 ):
 
     image_size = 256
+    n_images = 100
     epochs = 100
     lr = 0.0001
     betas = (0.9, 0.999)
@@ -194,7 +195,7 @@ def main(
     import torchvision.transforms as transforms
 
     pair_transform = transforms.Resize((image_size // 4, image_size // 4))
-    dataset = dataset_class(pair_transform=pair_transform, image_size=256)
+    dataset = dataset_class(pair_transform=pair_transform, image_size=256, n_images=n_images)
     dataset = to_loader(dataset, batch_size)
 
     G = Generator(n_blocks=16)
