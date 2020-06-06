@@ -80,7 +80,7 @@ class GeneratePairImageDanbooruDataset(Dataset):
         return image_paths
 
     def random_select(self, n_images):
-        indices = np.random.randint(0, len(self.image_paths), (n_images, ))
+        indices = np.random.choice(list(range(len(self.image_paths))), n_images)
 
         selected_image_paths = []
 
