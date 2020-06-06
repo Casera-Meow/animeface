@@ -4,19 +4,21 @@ from DCGAN import main as dcgan_main
 from cGAN import main as cgan_main
 from ACGAN import main as acgan_main
 from pixelshuffle import main as pixelshuffle_main
+from WGAN import main as wgan_main
+from WGAN_gp import main as wgan_gp_main
 
 from pix2pix import main as pix2pix_main
 from SRGAN import main as srgan_main
 
 def main():
-    # image_size = 128
-    # batch_size = 64
+    image_size = 128
+    batch_size = 64
 
-    # # dataset = AnimeFaceDataset(image_size=image_size)
+    # dataset = AnimeFaceDataset(image_size=image_size)
     # dataset = OneHotLabeledAnimeFaceDataset(image_size=image_size)
     # dataset = to_loader(dataset=dataset, batch_size=batch_size)
 
-    # pixelshuffle_main(
+    # wgan_gp_main(
     #     dataset=dataset,
     #     image_size=image_size
     # )
