@@ -44,8 +44,7 @@ class GeneratePairImageDanbooruDataset(Dataset):
         self.co_transform_head = transforms.RandomResizedCrop(image_size)
         self.pair_transform = pair_transform
         self.co_transform_tail = transforms.Compose([
-            transforms.ToTensor(),
-            transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
+            transforms.ToTensor()
         ])
 
     def __len__(self):
