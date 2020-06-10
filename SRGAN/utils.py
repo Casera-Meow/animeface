@@ -107,7 +107,7 @@ def train(
             # train to fool D
             pred_fake = D(gen_image)
             g_validity_loss = validity_criterion(pred_fake, gt)
-            g_content_loss = content_criterion((gen_image + 1) / 2, target)
+            g_content_loss = content_criterion(gen_image, target)
             # g_mse_loss = validity_criterion(gen_image, target)
             g_loss = 1.e-3 * g_validity_loss + g_content_loss
 
