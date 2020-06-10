@@ -107,9 +107,9 @@ def train(
             # train to fool D
             pred_fake = D(gen_image)
             g_validity_loss = validity_criterion(pred_fake, gt)
-            g_content_loss = content_criterion(gen_image, target)
-            g_loss = validity_gamma * g_validity_loss + g_content_loss
-
+            g_content_loss = content_criterion((gen_image + 1) / 2, target)
+            # g_mse_loss = validity_criterion(gen_image, target)
+            g_loss = 1.e-3 * g_validity_loss + g_content_loss
 
             # optimize
             optimizer_G.zero_grad()
@@ -136,8 +136,10 @@ def train(
             if batches_done % save_interval == 0 or batches_done == 1:
                 num_images = 32
                 images = grid(pair, gen_image, target, num_images)
-                save_image(images, "SRGAN/result/%d.png" % batches_done, nrow=4*3, normalize=True)
+                save_image(images, "SRGAN/result/%d.png" % batches_done, nrow=4*3)
 
+        torch.save(G.state_dict(), 'SRGAN/models/generator_{}.pt'.format(epoch))
+        
 
     return losses
 
@@ -184,13 +186,13 @@ def main(
 ):
 
     image_size = 256
-    n_images = 100
-    epochs = 100
+    n_images = 24000
+    epochs = 150
     lr = 0.0001
     betas = (0.9, 0.999)
     validity_gamma = 1.e-3
 
-    batch_size = 8
+    batch_size = 24
 
     import torchvision.transforms as transforms
 
@@ -218,7 +220,7 @@ def main(
     scheduler_D = LambdaLR(optimizer_D, lr_lambda=lr_lambda)
 
     validity_criterion = nn.MSELoss()
-    content_criterion = VGGLoss(loss_type='vgg22', device=device)
+    content_criterion = VGGLoss(loss_type='vgg54', device=device)
 
     losses = train(
         epochs=epochs,
@@ -233,8 +235,8 @@ def main(
         content_criterion=content_criterion,
         validity_gamma=validity_gamma,
         device=device,
-        verbose_interval=1000,
-        save_interval=4000
+        verbose_interval=100,
+        save_interval=1000
     )
 
     plot_loss(losses)

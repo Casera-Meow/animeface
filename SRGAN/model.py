@@ -10,10 +10,10 @@ class ResBlock(nn.Module):
 
         self.block = nn.Sequential(
             nn.Conv2d(channels, channels, kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(channels, 0.8),
+            nn.BatchNorm2d(channels),
             nn.PReLU(),
             nn.Conv2d(channels, channels, kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(channels, 0.8)
+            nn.BatchNorm2d(channels)
         )
 
     def forward(self, x):
@@ -51,7 +51,7 @@ class Generator(nn.Module):
 
         self.inter = nn.Sequential(
             nn.Conv2d(64, 64, kernel_size=3, stride=1, padding=1),
-            nn.BatchNorm2d(64, 0.8)
+            nn.BatchNorm2d(64)
         )
 
         self.up = nn.Sequential(
@@ -75,7 +75,7 @@ class Generator(nn.Module):
         img = self.up(img)
         img = self.outer(img)
 
-        return img
+        return (img + 1) / 2
 
 class ConvBlock(nn.Module):
     def __init__(self, in_channels, out_channels, stride):
